@@ -1,0 +1,91 @@
+.chat-container {
+    height: 100vh;
+}
+
+.header {
+    height: 64px;
+    background-color: royalblue;
+    text-align: center;
+    line-height: 64px;
+    font-size: 24px;
+    color: #fff;
+}
+
+.chat-container .main {
+    height: calc(100% - 64px);
+    display: flex;
+    flex-direction: column;
+}
+
+.conversation-name {
+    height: 64px;
+    background-color: #fff;
+    text-align: center;
+    line-height: 64px;
+    font-size: 24px;
+    border: 1px solid #DBDBDB;
+}
+
+.conversation-detail {
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.input-chat-wrapper {
+    display: flex;
+}
+
+.chat-wrapper {
+    border-top: 1px solid #DBDBDB;
+    display: flex
+}
+
+.input-chat-wrapper input {
+    flex-grow: 1;
+    height: 50px;
+    border: none;
+    padding-left: 15px;
+}
+
+.input-chat-wrapper input:focus {
+    outline: none;
+}
+
+.input-chat-wrapper button {
+    border: none;
+    background: transparent;
+    padding-right: 20px;
+    font-size: 24px;
+    color: blue;
+    cursor: pointer;
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+}
+
+.message.your {
+    align-items: flex-end;
+}
+
+.message-content {
+    max-width: 50%;
+    word-wrap: break-word;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.message.your .message-content {
+    background: royalblue;
+    color: #fff;
+}
+
+.message.their {
+    align-items: flex-start;
+}
+
+.message.their .message-content {
+    background: #fafafa;
+}
