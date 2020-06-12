@@ -20,7 +20,7 @@ window.onload = () => {
                 uid: user.uid,
                 email: user.email
             }
-            view.setActiveScreen('chatScreen')
+            view.setActiveScreen('loginScreen')
         } else {
             view.setActiveScreen('loginScreen')
         }
