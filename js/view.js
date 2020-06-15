@@ -38,38 +38,52 @@ view.setActiveScreen = (screenName) => {
             break
         case 'chatScreen':
             document.getElementById('app').innerHTML = components.chatScreen
+            model.loadConversations().then(res => {
+                view.setCurrentConversations()
+            })
             const sendMessageForm = document.getElementById('chat-form')
             sendMessageForm.addEventListener('submit', (e) => {
                 e.preventDefault()
                 console.log(sendMessageForm.message.value)
                 const message = {
-                    message: sendMessageForm.message.value,
-                    user: model.currentUser.displayName
+                    content: sendMessageForm.message.value,
+                    owner: model.currentUser.displayName
                 }
+                if (sendMessageForm.message.value === '') return
                 view.addMessage(message)
-                const chatBotMessage = {
-                    message: sendMessageForm.message.value,
-                    user: 'Chatbot'
-                }
-                view.addMessage(chatBotMessage)
+                    // const chatBotMessage = {
+                    //   content: sendMessageForm.message.value,
+                    // owner: 'Chatbot'
+                    //}
+                    // view.addMessage(chatBotMessage)
                 sendMessageForm.message.value = ''
             })
 
     }
 }
+view.setCurrentConversations = () => {
+    console.log
+    for (const oneMessage of model.currentConversation.messages) {
+        view.addMessage(oneMessage)
+    }
+}
+
 view.setMessageError = (elementId, message) => {
     document.getElementById(elementId).innerText = message
 }
 view.addMessage = (message) => {
     const messageWrapper = document.createElement('div')
     messageWrapper.classList.add("message-container")
-
-    const className = (message.user === model.currentUser.displayName) ? 'your' : 'their'
+    console.log(message)
+    const className = (message.owner === model.currentUser.email) ? 'your' : 'their'
     messageWrapper.innerHTML = `
     <div class="message ${className}">
-    <span class="sender">${message.user}</span>
-    <span class="message-content">${message.message}</span>
+    <span class="sender">${message.owner}</span>
+    <span class="message-content">${message.content}</span>
 </div>
     `
+
     document.getElementsByClassName("conversation-detail")[0].appendChild(messageWrapper)
+
+
 }

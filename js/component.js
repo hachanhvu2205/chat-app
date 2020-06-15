@@ -85,7 +85,7 @@ components.chatScreen = `
                 <form id="chat-form">
                     <div class="input-chat-wrapper">
                         <input type="text" id ="textSend" name="message" placeholder="Type a message....">
-                        <button onclick="disabledChat()" type="submit"><i  class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                        <button onclick="updateFirebase()" type="submit"><i  class="fa fa-paper-plane" aria-hidden="true"></i></button>
                     </div>
                 </form>
             </div>

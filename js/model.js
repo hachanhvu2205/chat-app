@@ -1,4 +1,6 @@
 const model = {};
+model.conversations = undefined;
+model.currentConversation = undefined;
 model.register = ({ firstName, lastName, email, password }) => {
     firebase.auth().createUserWithEmailAndPassword(email, password).then(res => {
         firebase.auth().currentUser.updateProfile({
@@ -36,3 +38,44 @@ model.login = ({ email, password }) => {
     })
 }
 model.currentUser = undefined;
+
+model.loadConversations = () => {
+    const promise = new Promise((resolve, reject) => {
+        const collectionName = "conversations"
+        firebase.firestore().collection(collectionName).where('users', 'array-contains', model.currentUser.email).get().then(res => {
+            model.conversations = getDataFromDocs(res.docs)
+            if (model.conversations.length > 0) {
+                model.currentConversation = model.conversations[0]
+            }
+            resolve()
+        })
+
+    })
+    return promise
+}
+let user = firebase.auth().currentUser;
+if (user != null) {
+    uid = user.uid;
+}
+
+function updateFirebase() {
+    const collectionName = "conversations"
+    const fb = firebase.firestore()
+    data = {
+        content: document.getElementById('chat-form').value,
+        createdAt: Date(),
+        owner: model.currentUser.displayName
+    }
+    firebase.firestore().collection(collectionName).doc(user.uid).update(data).then(res => {
+        console.log("updated")
+    })
+}
+getDataFromDoc = (doc) => {
+    let user = doc.data()
+    user.id = doc.id
+    return (user)
+}
+
+getDataFromDocs = (docs) => {
+    return docs.map(getDataFromDoc)
+}

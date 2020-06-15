@@ -39,11 +39,3 @@ controller.login = (formData) => {
         })
     }
 }
-
-function disabledChat() {
-    if (!document.getElementById('textSend').value.length) {
-        document.getElementById('button').disabled = true;
-    } else {
-        document.getElementById('button').disabled = false;
-    }
-}

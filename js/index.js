@@ -11,18 +11,73 @@ window.onload = () => {
         measurementId: "G-0JFGJQC5R8"
     };
     firebase.initializeApp(firebaseConfig);
-    console.log(firebase.app())
+    //templateFunction()
     firebase.auth().onAuthStateChanged(user => {
         if (user) {
-            console.log(user)
+            if (!user.emailVerified) { view.setActiveScreen('loginScreen') }
             model.currentUser = {
                 displayName: user.displayName,
                 uid: user.uid,
                 email: user.email
+
             }
-            view.setActiveScreen('loginScreen')
+            view.setActiveScreen('chatScreen')
+
         } else {
             view.setActiveScreen('loginScreen')
         }
     })
+}
+
+let templateFunction = () => {
+    const collectionName = "users"
+        //get 1 document
+    const docId = "bDmpyACP6OL6UO0ZQI5i"
+    firebase.firestore().collection(collectionName).doc(docId).get().then(res => {
+
+            console.log(getDataFromDoc(res))
+        })
+        // get multi document
+    firebase.firestore().collection(collectionName).where('name', '==', 'Alex').get().then(res => {
+
+            console.log(getDataFromDocs(res.docs))
+        })
+        // update document
+    const dataToUpdate = {
+        name: 'Ha',
+        age: 29,
+        phoneNumber: firebase.firestore.FieldValue.arrayUnion('097123124'),
+        phoneNumber: firebase.firestore.FieldValue.arrayRemove('097123123')
+    }
+    firebase.firestore().collection(collectionName).doc(docId).update(dataToUpdate).then(res => {})
+        // create document
+    const dataToCreate = {
+            name: 'Ahihi',
+            age: 40,
+            address: 'Ha Noi'
+        }
+        // firebase.firestore().collection(collectionName).add(dataToCreate).then(res => {
+        //       console.log('created')
+        // })
+        //delete document
+    const docIdDelete = "WJcGZHMZfWOZPYXAaNXa"
+    firebase.firestore().collection(collectionName).doc(docIdDelete).delete().then(res => {
+        console.log('Deleted')
+    })
+}
+getDataFromDoc = (doc) => {
+    let user = doc.data()
+    user.id = doc.id
+    return (user)
+}
+
+getDataFromDocs = (docs) => {
+    return docs.map(getDataFromDoc)
+}
+
+function learnMap() {
+    arr1 = [1, 2, 3, 4, 5]
+    const arr2 = arr1.map(x => x * 2)
+    return (arr2)
+
 }
