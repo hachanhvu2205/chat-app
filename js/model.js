@@ -48,8 +48,8 @@ model.loadConversations = () => {
         firebase.firestore().collection(collectionName).where('users', 'array-contains', model.currentUser.email).get().then(res => {
             model.conversations = getDataFromDocs(res.docs)
             if (model.conversations.length > 0) {
-                model.currentConversaton = model.conversations[0]
-                console.log(model.currentConversaton)
+                model.currentConversation = model.conversations[0]
+                console.log(model.currentConversation)
             }
             resolve()
         })

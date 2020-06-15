@@ -26,7 +26,7 @@ view.setActiveScreen = (screenName) => {
             redirectRegister.addEventListener('click', (e) => {
                 view.setActiveScreen('registerScreen')
             })
-            const loginForm = document.getElementById('login-form1')
+            const loginForm = document.getElementById('login-form')
             loginForm.addEventListener('submit', (e) => {
                 e.preventDefault()
                 const formData = {
@@ -46,23 +46,31 @@ view.setActiveScreen = (screenName) => {
                 e.preventDefault()
                 console.log(sendMessageForm.message.value)
                 const message = {
-                    // messages: firebase.FieldValue.arrayUnion({
-                    //createdAt: new Date(),
+                    //messages: firebase.firestore.FieldValue.arrayUnion({
+                    // createdAt: new Date(),
                     content: sendMessageForm.message.value,
                     owner: model.currentUser.email
                         //  })
                 }
                 if (sendMessageForm.message.value === '') return
-                    // view.addMessage(message)
+                view.addMessage(message)
                     //const chatBotMessage = {
                     //  content: sendMessageForm.message.value,
                     //owner: 'Chatbot'
                     //}
                     //view.addMessage(chatBotMessage)
                 sendMessageForm.message.value = ''
+                const message = {
+                    messages: firebase.firestore.FieldValue.arrayUnion({
+                        createdAt: new Date(),
+                        content: sendMessageForm.message.value,
+                        owner: model.currentUser.email
+                    })
+                }
             })
 
     }
+    model.updateConversation(message)
 }
 view.setCurrentConversations = () => {
     for (oneMessage of model.currentConversation.messages) {
@@ -86,6 +94,8 @@ view.addMessage = (message) => {
     `
 
     document.getElementsByClassName("conversation-detail")[0].appendChild(messageWrapper)
+
+}
 
 
 }
