@@ -46,24 +46,26 @@ view.setActiveScreen = (screenName) => {
                 e.preventDefault()
                 console.log(sendMessageForm.message.value)
                 const message = {
+                    // messages: firebase.FieldValue.arrayUnion({
+                    //createdAt: new Date(),
                     content: sendMessageForm.message.value,
-                    owner: model.currentUser.displayName
+                    owner: model.currentUser.email
+                        //  })
                 }
                 if (sendMessageForm.message.value === '') return
-                view.addMessage(message)
-                    // const chatBotMessage = {
-                    //   content: sendMessageForm.message.value,
-                    // owner: 'Chatbot'
+                    // view.addMessage(message)
+                    //const chatBotMessage = {
+                    //  content: sendMessageForm.message.value,
+                    //owner: 'Chatbot'
                     //}
-                    // view.addMessage(chatBotMessage)
+                    //view.addMessage(chatBotMessage)
                 sendMessageForm.message.value = ''
             })
 
     }
 }
 view.setCurrentConversations = () => {
-    console.log
-    for (const oneMessage of model.currentConversation.messages) {
+    for (oneMessage of model.currentConversation.messages) {
         view.addMessage(oneMessage)
     }
 }
