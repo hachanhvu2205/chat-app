@@ -41,36 +41,24 @@ view.setActiveScreen = (screenName) => {
             model.loadConversations().then(res => {
                 view.setCurrentConversations()
             })
+            model.setUpListenConversations()
             const sendMessageForm = document.getElementById('chat-form')
             sendMessageForm.addEventListener('submit', (e) => {
                 e.preventDefault()
                 console.log(sendMessageForm.message.value)
                 const message = {
-                    //messages: firebase.firestore.FieldValue.arrayUnion({
-                    // createdAt: new Date(),
+                    createdAt: new Date().toISOString(),
                     content: sendMessageForm.message.value,
                     owner: model.currentUser.email
-                        //  })
                 }
-                if (sendMessageForm.message.value === '') return
-                view.addMessage(message)
-                    //const chatBotMessage = {
-                    //  content: sendMessageForm.message.value,
-                    //owner: 'Chatbot'
-                    //}
-                    //view.addMessage(chatBotMessage)
-                sendMessageForm.message.value = ''
-                const message = {
-                    messages: firebase.firestore.FieldValue.arrayUnion({
-                        createdAt: new Date(),
-                        content: sendMessageForm.message.value,
-                        owner: model.currentUser.email
-                    })
+
+                // view.addMessage(message)
+                if (sendMessageForm.message.value !== '') {
+                    model.addMessage(message)
+                    sendMessageForm.message.value = ''
                 }
             })
-
     }
-    model.updateConversation(message)
 }
 view.setCurrentConversations = () => {
     for (oneMessage of model.currentConversation.messages) {
@@ -94,8 +82,5 @@ view.addMessage = (message) => {
     `
 
     document.getElementsByClassName("conversation-detail")[0].appendChild(messageWrapper)
-
-}
-
 
 }

@@ -47,12 +47,43 @@ model.loadConversations = () => {
         const collectionName = 'conversations'
         firebase.firestore().collection(collectionName).where('users', 'array-contains', model.currentUser.email).get().then(res => {
             model.conversations = getDataFromDocs(res.docs)
+            console.log(model.conversations);
             if (model.conversations.length > 0) {
                 model.currentConversation = model.conversations[0]
                 console.log(model.currentConversation)
             }
             resolve()
         })
+    })
+}
+model.setUpListenConversations = () => {
+    collectionName = "conversations"
+    let isFirstRun = true
+    firebase.firestore().collection(collectionName).where('users', 'array-contains', model.currentUser.email).
+    onSnapshot(res => {
+        if (isFirstRun) {
+            isFirstRun = false
+            return
+        }
+        console.log(res.docChanges())
+        const docChanges = res.docChanges()
+        for (docChange of docChanges) {
+            const type = docChange.type
+            const doc = getDataFromDoc(docChange.doc)
+
+            if (type === 'modified') {
+                for (let index = 0; index < model.conversations.length; index++) {
+                    if (model.conversations[index].id === doc.id) {
+                        model.conversations[index] = doc
+                    }
+                }
+                if (model.currentConversation.id === doc.id) {
+                    model.currentConversation = doc
+                    view.addMessage(model.currentConversation.messages[model.currentConversation.messages.length - 1])
+                }
+            }
+            console.log(doc)
+        }
     })
 }
 getDataFromDoc = (doc) => {
@@ -64,17 +95,13 @@ getDataFromDocs = (docs) => {
     return docs.map(getDataFromDoc)
 }
 
-const sendMessageForm = document.getElementById('chat-form')
-const message = {
-    messages: firebase.FieldValue.arrayUnion({
-        createdAt: new Date(),
-        content: sendMessageForm.message.value,
-        owner: model.currentUser.email
-    })
-}
-
-model.updateConversation = (message) => {
-    firebase.firestore().collection('conversations').doc("fuQKqU2YYt575vIVAizR").update(message).then(res => {
+model.addMessage = (message) => {
+    const collectionName = 'conversations'
+    const dataToUpdate = {
+        messages: firebase.firestore.FieldValue.arrayUnion(message)
+    }
+    firebase.firestore().collection('conversations').doc(model.currentConversation.id).update(dataToUpdate).then(res => {
         console.log("updated")
     })
+
 }
