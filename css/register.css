@@ -27,7 +27,7 @@
     justify-content: space-between;
 }
 
-.input-wrapper .input {
+.input-wrapper input {
     width: 100%;
 }
 
@@ -39,12 +39,21 @@
     width: 48%;
 }
 
-.submit-wrapper .input {
+.submit-wrapper input {
     padding: 10px 20px;
     background-color: #007bff;
     border-color: #007bff;
     color: #fff;
-    box-shadow: 0;
+    border-radius: 5px;
+    box-shadow: none;
+    cursor: pointer;
+}
+
+.submit-wrapper button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
     border-radius: 5px;
     box-shadow: none;
     cursor: pointer;
@@ -55,23 +64,11 @@
     justify-content: space-between;
 }
 
-#rediect-login {
+.submit-wrapper a {
     cursor: pointer;
-    font-size: 20px;
 }
 
 #loading-icon {
     display: none;
     font-size: 14px;
-}
-
-#login-text {
-    padding: 10px 20px;
-    background-color: #007bff;
-    border-color: #007bff;
-    color: #fff;
-    box-shadow: 0;
-    border-radius: 5px;
-    box-shadow: none;
-    cursor: pointer;
 }
